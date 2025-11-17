@@ -8,13 +8,13 @@ class TestMueble:
         """Verificar que Mueble es una clase abstracta y no se puede instanciar"""
         with pytest.raises(TypeError):
             mueble = Mueble("Mesa", "Madera", "Café", 100.0)
-    
+
     def test_tiene_metodos_abstractos(self):
         """Verificar que tiene métodos abstractos definidos"""
         # Verificar que tiene métodos abstractos
-        assert hasattr(Mueble, 'calcular_precio')
-        assert hasattr(Mueble, 'obtener_descripcion')
-        
+        assert hasattr(Mueble, "calcular_precio")
+        assert hasattr(Mueble, "obtener_descripcion")
+
         # Verificar que son abstractos
         assert Mueble.calcular_precio.__isabstractmethod__
         assert Mueble.obtener_descripcion.__isabstractmethod__

@@ -50,7 +50,9 @@ class TestSilla:
 
     def test_silla_con_ruedas(self):
         """Probar silla con ruedas"""
-        silla = Silla("Silla Oficina", "Metal", "Negro", 90.0, True, "Cuero", True, True)
+        silla = Silla(
+            "Silla Oficina", "Metal", "Negro", 90.0, True, "Cuero", True, True
+        )
         assert silla.altura_regulable == True
         assert silla.tiene_ruedas == True
 
@@ -66,5 +68,7 @@ class TestSilla:
 
     def test_silla_precio_alto(self):
         """Probar silla con precio alto"""
-        silla = Silla("Silla Premium", "Caoba", "Café Oscuro", 200.0, True, "Cuero", True, False)
+        silla = Silla(
+            "Silla Premium", "Caoba", "Café Oscuro", 200.0, True, "Cuero", True, False
+        )
         assert silla.calcular_precio() > 0

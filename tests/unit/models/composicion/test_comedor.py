@@ -8,12 +8,17 @@ class TestComedorComposicion:
     @pytest.fixture
     def mesa_basica(self):
         """Fixture para crear una mesa básica de prueba"""
-        return Mesa("Mesa Roble", "Roble", "Natural", 300.0, "rectangular", 150.0, 90.0, 75.0, 8)
+        return Mesa(
+            "Mesa Roble", "Roble", "Natural", 300.0, "rectangular", 150.0, 90.0, 75.0, 8
+        )
 
     @pytest.fixture
     def sillas_basicas(self):
         """Fixture para crear un conjunto de sillas básicas"""
-        return [Silla("Silla Roble", "Roble", "Natural", 80.0, True, "Tela") for _ in range(8)]
+        return [
+            Silla("Silla Roble", "Roble", "Natural", 80.0, True, "Tela")
+            for _ in range(8)
+        ]
 
     @pytest.fixture
     def comedor_completo(self, mesa_basica, sillas_basicas):
@@ -87,8 +92,12 @@ class TestComedorComposicion:
 
     def test_comedor_diferente_numero_sillas(self):
         """Probar comedor con diferente número de sillas"""
-        mesa = Mesa("Mesa Pequeña", "Pino", "Natural", 150.0, "redonda", 90.0, 90.0, 75.0, 4)
-        sillas = [Silla("Silla Pino", "Pino", "Natural", 50.0, True, "Tela") for _ in range(4)]
+        mesa = Mesa(
+            "Mesa Pequeña", "Pino", "Natural", 150.0, "redonda", 90.0, 90.0, 75.0, 4
+        )
+        sillas = [
+            Silla("Silla Pino", "Pino", "Natural", 50.0, True, "Tela") for _ in range(4)
+        ]
         comedor = Comedor("Comedor Pequeño", mesa, sillas)
 
         assert len(comedor.sillas) == 4
@@ -121,7 +130,17 @@ class TestComedorComposicion:
     )
     def test_diferentes_configuraciones(self, num_sillas, precio_silla):
         """Probar comedores con diferentes configuraciones"""
-        mesa = Mesa("Mesa Test", "Madera", "Natural", 200.0, "rectangular", 120.0, 80.0, 75.0, num_sillas)
+        mesa = Mesa(
+            "Mesa Test",
+            "Madera",
+            "Natural",
+            200.0,
+            "rectangular",
+            120.0,
+            80.0,
+            75.0,
+            num_sillas,
+        )
         sillas = [
             Silla(f"Silla {i}", "Madera", "Natural", precio_silla, True, "Tela")
             for i in range(num_sillas)

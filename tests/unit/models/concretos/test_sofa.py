@@ -61,6 +61,8 @@ class TestSofa:
         assert sofa.numero_patas == 6
 
     import pytest
+
+
 from src.models.concretos.sofa import Sofa
 
 
@@ -68,8 +70,10 @@ class TestSofa:
     @pytest.fixture
     def sofa_basico(self):
         """Fixture para crear un sofá básico de prueba"""
-        return Sofa("Sofá Moderno", "Tela", "Gris", 600.0, 3, True, "Tela", True, False, True)
-    
+        return Sofa(
+            "Sofá Moderno", "Tela", "Gris", 600.0, 3, True, "Tela", True, False, True
+        )
+
     def test_instanciacion_correcta(self, sofa_basico):
         """Verificar que el sofá se instancia correctamente con todos sus atributos"""
         assert sofa_basico.nombre == "Sofá Moderno"
@@ -78,28 +82,41 @@ class TestSofa:
         assert sofa_basico.precio_base == 600.0
         assert sofa_basico.capacidad_personas == 3
         assert sofa_basico.tiene_brazos == True
-    
+
     def test_calcular_precio(self, sofa_basico):
         """Probar el cálculo del precio del sofá"""
         precio = sofa_basico.calcular_precio()
         assert precio > 0
         assert isinstance(precio, float)
-    
+
     def test_obtener_descripcion(self, sofa_basico):
         """Verificar que la descripción contiene la información correcta"""
         descripcion = sofa_basico.obtener_descripcion()
         assert "Sofá Moderno" in descripcion
         assert "Tela" in descripcion
         assert isinstance(descripcion, str)
-    
+
     def test_sofa_dos_personas(self):
         """Probar sofá de dos personas (loveseat)"""
-        sofa = Sofa("Loveseat", "Cuero", "Negro", 400.0, 2, True, "Cuero", True, False, False)
+        sofa = Sofa(
+            "Loveseat", "Cuero", "Negro", 400.0, 2, True, "Cuero", True, False, False
+        )
         assert sofa.capacidad_personas == 2
-    
+
     def test_sofa_modular(self):
         """Probar sofá modular"""
-        sofa = Sofa("Sofá Modular", "Microfibra", "Beige", 800.0, 4, True, "Microfibra", True, True, True)
+        sofa = Sofa(
+            "Sofá Modular",
+            "Microfibra",
+            "Beige",
+            800.0,
+            4,
+            True,
+            "Microfibra",
+            True,
+            True,
+            True,
+        )
         assert sofa.es_modular == True
 
     def test_sofa_sin_patas(self):
