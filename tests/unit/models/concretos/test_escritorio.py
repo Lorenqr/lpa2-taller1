@@ -6,68 +6,46 @@ class TestEscritorio:
     @pytest.fixture
     def escritorio_basico(self):
         """Fixture para crear un escritorio básico de prueba"""
-        return Escritorio("Escritorio Oficina", "Madera", 250.0, "Rectangular", 2)
-
+        return Escritorio("Escritorio Oficina", "Madera", "Café", 250, "rectangular", True, 2, 1.2, False)
+    
     def test_instanciacion_correcta(self, escritorio_basico):
         """Verificar que el escritorio se instancia correctamente con todos sus atributos"""
-        # Verificar herencia de atributos de Mueble
         assert escritorio_basico.nombre == "Escritorio Oficina"
         assert escritorio_basico.material == "Madera"
-        assert escritorio_basico.precio_base == 250.0
-
-        # Verificar atributos específicos de Superficies
-        assert escritorio_basico.forma == "Rectangular"
-
-        # Verificar atributos específicos de Escritorio
-        assert escritorio_basico.numero_cajones == 2
-
+        assert escritorio_basico.color == "Café"
+        assert escritorio_basico.precio_base == 250
+        assert escritorio_basico.forma == "rectangular"
+        assert escritorio_basico.tiene_cajones == True
+        assert escritorio_basico.num_cajones == 2
+    
     def test_calcular_precio(self, escritorio_basico):
         """Probar el cálculo del precio del escritorio"""
         precio = escritorio_basico.calcular_precio()
-        assert precio == 250.0  # Precio base sin modificaciones
-        assert isinstance(precio, float)
-
+        # Precio: 250 + (2 cajones * 25) = 300
+        assert precio == 300
+        assert isinstance(precio, int)
+    
     def test_obtener_descripcion(self, escritorio_basico):
         """Verificar que la descripción contiene la información correcta"""
         descripcion = escritorio_basico.obtener_descripcion()
         assert "Escritorio Oficina" in descripcion
         assert "Madera" in descripcion
         assert isinstance(descripcion, str)
-
+    
     def test_escritorio_sin_cajones(self):
         """Probar escritorio sin cajones"""
-        escritorio = Escritorio("Escritorio Simple", "Metal", 150.0, "Rectangular", 0)
-        assert escritorio.numero_cajones == 0
-
-    def test_escritorio_muchos_cajones(self):
-        """Probar escritorio con muchos cajones"""
-        escritorio = Escritorio("Escritorio Ejecutivo", "Roble", 400.0, "L", 6)
-        assert escritorio.numero_cajones == 6
-        assert escritorio.forma == "L"
-
-    @pytest.mark.parametrize(
-        "forma,precio",
-        [
-            ("Rectangular", 200.0),
-            ("L", 300.0),
-            ("Circular", 250.0),
-            ("Ovalado", 280.0),
-        ],
-    )
-    def test_diferentes_formas(self, forma, precio):
-        """Probar escritorios con diferentes formas"""
-        escritorio = Escritorio(f"Escritorio {forma}", "Madera", precio, forma, 2)
-        assert escritorio.forma == forma
-        assert escritorio.calcular_precio() == precio
-
-    def test_escritorio_diferentes_materiales(self):
-        """Probar escritorios con diferentes materiales"""
-        escritorio_vidrio = Escritorio(
-            "Escritorio Vidrio", "Vidrio", 350.0, "Rectangular", 0
-        )
-        escritorio_metal = Escritorio(
-            "Escritorio Metal", "Metal", 200.0, "Rectangular", 3
-        )
-
-        assert escritorio_vidrio.material == "Vidrio"
-        assert escritorio_metal.material == "Metal"
+        escritorio = Escritorio("Escritorio Simple", "Metal", "Gris", 150, "rectangular", False, 0)
+        assert escritorio.tiene_cajones == False
+        assert escritorio.num_cajones == 0
+    
+    def test_escritorio_con_iluminacion(self):
+        """Probar escritorio con iluminación"""
+        escritorio = Escritorio("Escritorio LED", "Madera", "Blanco", 300, "rectangular", False, 0, 1.2, True)
+        # Precio: 300 + 40 (iluminación) = 340
+        assert escritorio.calcular_precio() == 340
+    
+    def test_escritorio_grande(self):
+        """Probar escritorio grande"""
+        escritorio = Escritorio("Escritorio Ejecutivo", "Roble", "Negro", 400, "L", True, 4, 1.8, True)
+        # Precio: 400 + (4*25) + 50 (largo>1.5) + 40 (ilum) + 30 (forma) = 620
+        assert escritorio.calcular_precio() == 620

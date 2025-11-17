@@ -60,20 +60,47 @@ class TestSofa:
         assert sofa.capacidad_personas == 6
         assert sofa.numero_patas == 6
 
-    @pytest.mark.parametrize(
-        "material,precio",
-        [
-            ("Tela", 500.0),
-            ("Cuero", 800.0),
-            ("Microfibra", 600.0),
-            ("Terciopelo", 700.0),
-        ],
-    )
-    def test_diferentes_materiales(self, material, precio):
-        """Probar sofás con diferentes materiales"""
-        sofa = Sofa(f"Sofá {material}", material, precio, 4, 3)
-        assert sofa.material == material
-        assert sofa.calcular_precio() == precio
+    import pytest
+from src.models.concretos.sofa import Sofa
+
+
+class TestSofa:
+    @pytest.fixture
+    def sofa_basico(self):
+        """Fixture para crear un sofá básico de prueba"""
+        return Sofa("Sofá Moderno", "Tela", "Gris", 600.0, 3, True, "Tela", True, False, True)
+    
+    def test_instanciacion_correcta(self, sofa_basico):
+        """Verificar que el sofá se instancia correctamente con todos sus atributos"""
+        assert sofa_basico.nombre == "Sofá Moderno"
+        assert sofa_basico.material == "Tela"
+        assert sofa_basico.color == "Gris"
+        assert sofa_basico.precio_base == 600.0
+        assert sofa_basico.capacidad_personas == 3
+        assert sofa_basico.tiene_brazos == True
+    
+    def test_calcular_precio(self, sofa_basico):
+        """Probar el cálculo del precio del sofá"""
+        precio = sofa_basico.calcular_precio()
+        assert precio > 0
+        assert isinstance(precio, float)
+    
+    def test_obtener_descripcion(self, sofa_basico):
+        """Verificar que la descripción contiene la información correcta"""
+        descripcion = sofa_basico.obtener_descripcion()
+        assert "Sofá Moderno" in descripcion
+        assert "Tela" in descripcion
+        assert isinstance(descripcion, str)
+    
+    def test_sofa_dos_personas(self):
+        """Probar sofá de dos personas (loveseat)"""
+        sofa = Sofa("Loveseat", "Cuero", "Negro", 400.0, 2, True, "Cuero", True, False, False)
+        assert sofa.capacidad_personas == 2
+    
+    def test_sofa_modular(self):
+        """Probar sofá modular"""
+        sofa = Sofa("Sofá Modular", "Microfibra", "Beige", 800.0, 4, True, "Microfibra", True, True, True)
+        assert sofa.es_modular == True
 
     def test_sofa_sin_patas(self):
         """Probar sofá sin patas visibles"""

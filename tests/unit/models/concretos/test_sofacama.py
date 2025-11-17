@@ -86,20 +86,58 @@ class TestSofaCama:
         assert sofa_cama.tamaño_colchon == "King"
         assert sofa_cama.material == "Cuero"
 
-    @pytest.mark.parametrize(
-        "material,precio",
-        [
-            ("Tela", 500.0),
-            ("Cuero", 700.0),
-            ("Microfibra", 550.0),
-            ("Terciopelo", 650.0),
-        ],
-    )
-    def test_diferentes_materiales(self, material, precio):
-        """Probar sofás cama con diferentes materiales"""
-        sofa_cama = SofaCama(f"Sofá Cama {material}", material, precio, 3, "Queen")
-        assert sofa_cama.material == material
-        assert sofa_cama.calcular_precio() >= precio
+    import pytest
+from src.models.concretos.sofacama import SofaCama
+
+
+class TestSofaCama:
+    @pytest.fixture
+    def sofacama_basico(self):
+        """Fixture para crear un sofá cama básico de prueba"""
+        return SofaCama("Sofá Cama Moderno", "Tela", "Gris", 500, 3, "Tela", "queen", True, "plegable")
+    
+    def test_instanciacion_correcta(self, sofacama_basico):
+        """Verificar que el sofá cama se instancia correctamente con todos sus atributos"""
+        assert sofacama_basico.nombre == "Sofá Cama Moderno"
+        assert sofacama_basico.material == "Tela"
+        assert sofacama_basico.color == "Gris"
+        assert sofacama_basico.precio_base == 500
+        assert sofacama_basico.capacidad_personas == 3
+        assert sofacama_basico.tamaño == "queen"
+    
+    def test_herencia_multiple(self):
+        """Verificar la herencia múltiple del sofá cama"""
+        sofa_cama = SofaCama("Sofá Cama", "Tela", "Azul", 500, 3, "Tela", "matrimonial", True, "plegable")
+        assert sofa_cama.capacidad_personas == 3
+        assert sofa_cama.tamaño == "matrimonial"
+        assert hasattr(sofa_cama, 'calcular_precio')
+        assert hasattr(sofa_cama, 'obtener_descripcion')
+    
+    def test_calcular_precio(self, sofacama_basico):
+        """Probar el cálculo del precio del sofá cama"""
+        precio = sofacama_basico.calcular_precio()
+        assert precio > 500
+        assert isinstance(precio, float)
+    
+    def test_obtener_descripcion(self, sofacama_basico):
+        """Verificar que la descripción contiene la información correcta"""
+        descripcion = sofacama_basico.obtener_descripcion()
+        assert "Sofá Cama Moderno" in descripcion or "Sofá" in descripcion
+        assert "Tela" in descripcion
+        assert isinstance(descripcion, str)
+    
+    def test_sofacama_dos_personas(self):
+        """Probar sofá cama pequeño para dos personas"""
+        sofa_cama = SofaCama("Sofá Cama Compacto", "Tela", "Beige", 450, 2, "Tela", "individual", False, "plegable")
+        assert sofa_cama.capacidad_personas == 2
+        assert sofa_cama.tamaño == "individual"
+    
+    def test_sofacama_premium(self):
+        """Probar sofá cama premium con características superiores"""
+        sofa_cama = SofaCama("Sofá Cama Premium", "Cuero", "Negro", 1000, 4, "Cuero", "king", True, "extensible")
+        assert sofa_cama.capacidad_personas == 4
+        assert sofa_cama.tamaño == "king"
+        assert sofa_cama.material == "Cuero"
 
     def test_sofacama_economico(self):
         """Probar sofá cama económico"""
