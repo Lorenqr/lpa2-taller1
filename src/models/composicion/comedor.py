@@ -4,9 +4,11 @@ Un comedor está compuesto por una mesa y varias sillas.
 """
 
 # Importar List para anotaciones de tipo
-from typing import List
-# from ..concretos.mesa import Mesa
-# from ..concretos.silla import Silla
+from typing import List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ..concretos.mesa import Mesa
+    from ..concretos.silla import Silla
 
 
 class Comedor:
