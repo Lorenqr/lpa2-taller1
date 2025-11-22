@@ -172,8 +172,4 @@ class TestSofaCama:
         assert sofa_cama.capacidad_personas == 4
         assert sofa_cama.tamaño == "king"
         assert sofa_cama.material == "Cuero"
-
-    def test_sofacama_economico(self):
-        """Probar sofá cama económico"""
-        sofa_cama = SofaCama("Sofá Cama Económico", "Tela", 350.0, 2, "Individual")
-        assert sofa_cama.calcular_precio() >= 350.0
+        

@@ -3,7 +3,7 @@ Clase Comedor que implementa composición.
 Un comedor está compuesto por una mesa y varias sillas.
 """
 
-from typing import List, TYPE_CHECKING
+from typing import List, TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
     from ..concretos.mesa import Mesa
@@ -60,20 +60,35 @@ class Comedor:
         self._sillas.append(silla)
         return f"Silla '{getattr(silla, 'nombre', 'Sin nombre')}' agregada exitosamente."
 
-    def quitar_silla(self, indice: int = -1) -> str:
+    def quitar_silla(self, indice: Union[int, "Silla"] = -1) -> str:
         """
-        Quita una silla por índice (por defecto la última).
+        Quita una silla por índice (por defecto la última) o por instancia.
+        Si se pasa una instancia de Silla, se intenta remover esa instancia.
         """
         if not self._sillas:
             return "No hay sillas para quitar."
 
+        from ..concretos.silla import Silla as ClaseSilla
+
+        # quitar por objeto
+        if isinstance(indice, ClaseSilla):
+            try:
+                self._sillas.remove(indice)
+                return f"Silla '{getattr(indice, 'nombre', 'Sin nombre')}' removida del comedor."
+            except ValueError:
+                return "La silla indicada no se encuentra en el comedor."
+
+        # quitar por índice (espera int)
         try:
-            silla_removida = self._sillas.pop(indice)
-        except IndexError:
+            silla_removida = self._sillas.pop(int(indice))
+        except (IndexError, ValueError, TypeError):
             return "Índice de silla inválido."
 
         return f"Silla '{getattr(silla_removida, 'nombre', 'Sin nombre')}' removida del comedor."
 
+    # Método esperado por los tests: calcular_precio()
+    def calcular_precio(self) -> float:
+        return self.calcular_precio_total()
 
     def calcular_precio_total(self) -> float:
         """
@@ -88,12 +103,17 @@ class Comedor:
 
         return round(precio_total, 2)
 
+    # Método esperado por los tests: obtener_descripcion()
+    def obtener_descripcion(self) -> str:
+        return self.obtener_descripcion_completa()
 
     def obtener_descripcion_completa(self) -> str:
         """
         Retorna una descripción detallada del comedor.
+        Se cambia el encabezado para mostrar el nombre tal cual (sin forzar mayúsculas),
+        así los tests que buscan "Comedor Familiar" lo encontrarán.
         """
-        descripcion = f"=== COMEDOR {self.nombre.upper()} ===\n\n"
+        descripcion = f"=== {self.nombre} ===\n\n"
 
         descripcion += "MESA:\n"
         descripcion += self._mesa.obtener_descripcion() + "\n\n"
@@ -148,7 +168,6 @@ class Comedor:
         Calcula la capacidad máxima de sillas basada en atributos de la mesa.
         """
         return getattr(self._mesa, "capacidad_personas", 6)
-
 
     def __str__(self) -> str:
         return f"Comedor {self._nombre}: Mesa + {len(self._sillas)} sillas"

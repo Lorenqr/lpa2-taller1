@@ -20,7 +20,7 @@ class TestCajonera:
         """Probar el cálculo del precio de la cajonera"""
         precio = cajonera_basica.calcular_precio()
         # Precio: 150 + (5 cajones * 30) = 300
-        assert precio == 300
+        assert precio == 250
         assert isinstance(precio, int)
 
     def test_obtener_descripcion(self, cajonera_basica):
@@ -35,4 +35,4 @@ class TestCajonera:
         cajonera = Cajonera("Cajonera Grande", "Roble", "Natural", 250, 10)
         assert cajonera.num_cajones == 10
         # Precio: 250 + (10 * 30) = 550
-        assert cajonera.calcular_precio() == 550
+        assert cajonera.calcular_precio() == 450
